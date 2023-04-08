@@ -1,5 +1,6 @@
 import subprocess
 import random
+import re
 
 def get_interface_name():
     # prompt user to enter interface name
