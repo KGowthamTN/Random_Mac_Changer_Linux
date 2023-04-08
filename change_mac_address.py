@@ -1,31 +1,35 @@
-#!/usr/bin/env python3
 import subprocess
 import random
 
-def get_mac(interface):
-    # run the command to get the current MAC address
-    output = subprocess.check_output(['ifconfig', interface])
-    mac = output.split()[4].decode()
-
+def get_random_mac():
+    # Generate a random MAC address
+    mac = [ 0x00, 0x16, 0x3e, random.randint(0x00, 0x7f), random.randint(0x00, 0xff), random.randint(0x00, 0xff) ]
     return mac
 
-def change_mac(interface):
-    # generate a random MAC address
-    mac = [0x00, 0x16, 0x3e, random.randint(0x00, 0x7f), 
-           random.randint(0x00, 0xff), random.randint(0x00, 0xff)]
-    mac_str = ':'.join(map(lambda x: "%02x" % x, mac))
+def change_mac_address(interface):
+    # Generate a new MAC address
+    new_mac = ':'.join(map(lambda x: "%02x" % x, get_random_mac()))
 
-    # run the command to change the MAC address
-    subprocess.call(['sudo', 'ifconfig', interface, 'down'])
-    subprocess.call(['sudo', 'ifconfig', interface, 'hw', 'ether', mac_str])
-    subprocess.call(['sudo', 'ifconfig', interface, 'up'])
+    # Turn off the interface
+    subprocess.call(['ifconfig', interface, 'down'])
 
-    new_mac = get_mac(interface)
-    if new_mac == mac_str:
-        print(f'Successfully changed MAC address of {interface} to {mac_str}')
+    # Set the new MAC address
+    subprocess.call(['ip', 'link', 'set', 'dev', interface, 'address', new_mac])
+
+    # Turn on the interface
+    subprocess.call(['ifconfig', interface, 'up'])
+
+    # Check if the MAC address has been changed
+    p = subprocess.Popen(['ip', 'link', 'show', interface], stdout=subprocess.PIPE)
+    output = p.communicate()[0]
+    if new_mac.lower() in output.decode().lower():
+        print(f"Successfully changed MAC address of {interface} to {new_mac}")
     else:
-        print('Error: Failed to change MAC address')
+        print(f"Error: Failed to change MAC address of {interface}")
 
 if __name__ == '__main__':
-    interface = input('Enter interface name: ')
-    change_mac(interface)
+    # Get the name of the network interface from the user
+    interface = input("Enter interface name: ")
+
+    # Change the MAC address of the specified interface
+    change_mac_address(interface)
