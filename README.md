@@ -3,17 +3,17 @@ This program is a Python script that allows you to change the MAC address of you
 
 # Usage
 
-1.Open a terminal on your Linux computer.
+1. Open a terminal on your Linux computer.
 
-2.Clone the repository or download the change_mac_address.py file.
+2. Clone the repository or download the change_mac_address.py file.
 
-3.Navigate to the directory containing the change_mac_address.py file.
+3. Navigate to the directory containing the change_mac_address.py file.
 
-4.Run the script using the following command: python3 change_mac_address.py.
+4. Run the script using the following command: python3 change_mac_address.py.
 
-5.Enter the name of the network interface that you want to change the MAC address for. You can find the name of your network interface by running the ifconfig command in the terminal.
+5. Enter the name of the network interface that you want to change the MAC address for. You can find the name of your network interface by running the ifconfig command in the terminal.
 
-6.The script will generate a new MAC address and apply it to the specified network interface. If the operation is successful, you will see a success message in the terminal. If there is an error, you will see an error message instead.
+6. The script will generate a new MAC address and apply it to the specified network interface. If the operation is successful, you will see a success message in the terminal. If there is an error, you will see an error message instead.
 
 # Example
 
